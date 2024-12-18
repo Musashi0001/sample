@@ -37,9 +37,9 @@
 			<input type="password" name="password-confirm" id="reg-password-confirm" autocomplete="new-password"
 				required>
 			<!-- エラーメッセージの表示 -->
-			<div th:if="${registerErrors}" style="color: red; list-style: none;">
+			<div th:if="${registerErrors}" style="color: red;">
 				<ul>
-					<li th:each="error : ${registerErrors}" th:text="${error}"></li>
+					<li th:each="error : ${registerErrors}" th:text="${error}" style="list-style: none;"></li>
 				</ul>
 			</div>
 			<button type="submit">登録</button>

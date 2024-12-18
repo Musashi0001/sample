@@ -27,7 +27,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 
 		// ROLE_ADMIN 以外は一般ユーザー用のページへ遷移
-		System.out.println("一般ゆうざあ");
 		response.sendRedirect("/home");
 	}
 }

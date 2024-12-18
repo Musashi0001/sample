@@ -30,17 +30,16 @@ public class ResistrationController {
 
 		List<String> errors = new ArrayList<>();
 
-		// パスワード一致確認
-		if (!user.getPassword().equals(passwordConfirm)) {
-			errors.add("パスワードが一致しません。");
-		}
-
 		// 重複確認
 		if (userRepository.findByUsername(user.getUsername()).isPresent()) {
 			errors.add("このユーザーネームは既に使用されています。");
 		}
 		if (userRepository.findByEmail(user.getEmail()).isPresent()) {
 			errors.add("このメールアドレスは既に使用されています。");
+		} 
+		// パスワード一致確認
+		if (!user.getPassword().equals(passwordConfirm)) {
+			errors.add("パスワードが一致しません。");
 		}
 
 		if (!errors.isEmpty()) {

@@ -15,8 +15,6 @@ public class LoginController {
 
 	@GetMapping("/home")
 	public String home(HttpSession session) {
-		session.removeAttribute("username");
-		session.removeAttribute("error");
 		return "home";
 	}
 }

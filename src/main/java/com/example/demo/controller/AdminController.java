@@ -23,7 +23,6 @@ public class AdminController {
     public String adminDashboard(Model model) {
     	List<User> users = userService.getAllUsers();
     	model.addAttribute("users", users);
-    	System.out.println(users);
         return "admin/dashboard";
     }
 }
