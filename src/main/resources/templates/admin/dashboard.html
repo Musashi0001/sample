@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}"> 
 	<title>Admin Dashboard</title>
 </head>
 
@@ -10,6 +12,30 @@
 	<h1>管理者専用ダッシュボード</h1>
 	<p>ようこそ、管理者ユーザー！</p>
 	<a href="/logout">ログアウト</a>
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>ユーザーネーム</th>
+				<th>メールアドレス</th>
+				<th>ロール</th>
+				<th>作成日</th>
+				<th>更新日</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${users}">
+				<td th:text="${user.id}"></td>
+				<td th:text="${user.username}"></td>
+				<td th:text="${user.email}"></td>
+				<td th:text="${user.role}"></td>
+				<td th:text="${user.getFormattedDate(user.createdAt)}"></td>
+				<td th:text="${user.getFormattedDate(user.updatedAt)}"></td>
+			</tr>
+		</tbody>
+	</table>
+
 </body>
 
 </html>

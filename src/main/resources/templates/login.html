@@ -18,20 +18,31 @@
 			<input type="text" name="username" id="username" autocomplete="username" required>
 			<label for="password">パスワード</label>
 			<input type="password" name="password" id="password" autocomplete="current-password" required>
+			<!-- 完了メッセージの表示 -->
+			<p th:if="${success}" style="color: green;">[[${success}]]</p>
+			<!-- エラーメッセージの表示 -->
 			<button type="submit">ログイン</button>
 		</form>
 		<!-- 新規登録フォーム -->
 		<form id="register-form" class="form" th:action="@{/register}" method="post"
 			th:classappend="${showRegister} ? '' : 'hidden'">
 			<label for="reg-username">ユーザーネーム</label>
-			<input type="text" name="username" id="reg-username" autocomplete="username" required>
+			<input type="text" name="username" id="reg-username" autocomplete="username"
+				th:value="${registerForm?.username}" required>
+			<label for="email">メールアドレス</label>
+			<input type="email" name="email" id="email" autocomplete="email" th:value="${registerForm?.email}" required>
 			<label for="reg-password">パスワード</label>
 			<input type="password" name="password" id="reg-password" autocomplete="new-password" required>
 			<label for="reg-password-confirm">パスワード (確認)</label>
-			<input type="password" name="password-confirm" id="reg-password-confirm" autocomplete="new-password" required>
-			<button type="submit">登録</button>
+			<input type="password" name="password-confirm" id="reg-password-confirm" autocomplete="new-password"
+				required>
 			<!-- エラーメッセージの表示 -->
-			<p th:if="${error}" th:text="${error}" style="color: red;"></p>
+			<div th:if="${registerErrors}" style="color: red; list-style: none;">
+				<ul>
+					<li th:each="error : ${registerErrors}" th:text="${error}"></li>
+				</ul>
+			</div>
+			<button type="submit">登録</button>
 		</form>
 		<div class="toggle-container">
 			<button id="toggle-button" th:text="${showRegister} ? 'ログインに切り替え' : '新規登録に切り替え'">新規登録に切り替え</button>

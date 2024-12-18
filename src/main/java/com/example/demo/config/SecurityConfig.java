@@ -9,14 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
 	private final CustomAuthenticationSuccessHandler successHandler;
-
-	public SecurityConfig(CustomAuthenticationSuccessHandler successHandler) {
-		this.successHandler = successHandler;
-	}
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
