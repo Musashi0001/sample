@@ -12,8 +12,8 @@ import com.example.demo.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepository;
@@ -34,4 +34,13 @@ public class UserService implements UserDetailsService {
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
+	
+	public long getUsersCount() {
+		return userRepository.count();
+	}
+	
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません (ID: " + id + ")"));
+    }
 }

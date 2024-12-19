@@ -2,7 +2,10 @@ package com.example.demo.entity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +50,12 @@ public class User {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+	
+	@Column(nullable = false)
+	private boolean isBanned;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ban> bans = new ArrayList<>(); // ユーザーが持つBANのリスト
 
 	public String getFormattedDate(LocalDateTime date) {
 		return date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));

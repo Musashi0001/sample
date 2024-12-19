@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<h2>ユーザー詳細</h2>
+	<p>ID: <span th:text="${user.id}"></span></p>
+	<p>名前: <span th:text="${user.username}"></span></p>
+	<p>メール: <span th:text="${user.email}"></span></p>
+	<p>ロール: <span th:text="${user.role}"></span></p>
+	<p>状態: <span th:text="${user.isBanned ? 'BAN中' : 'アクティブ'}"></span></p>
+
+	<h3>BAN操作</h3>
+	<form th:action="@{/admin/ban/{userId}(userId=${user.id})}" method="post">
+		<label for="banType">BANの種類:</label>
+		<select name="banType">
+			<option value="SOFT">Soft Ban</option>
+			<option value="TEMPORARY">Temporary Ban</option>
+			<option value="PERMANENT">Permanent Ban</option>
+		</select>
+		<label for="duration">期間（日数）:</label>
+		<input type="number" name="duration" placeholder="日数" />
+		<label for="reason">理由:</label>
+		<input type="text" name="reason" placeholder="BAN理由" />
+		<button type="submit">BANを適用</button>
+	</form>
+
+	<h3>BAN解除</h3>
+	<form th:action="@{/admin/unban/{userId}(userId=${user.id})}" method="post">
+		<button type="submit">BAN解除</button>
+	</form>
+
+</body>
+
+</html>

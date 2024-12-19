@@ -4,16 +4,17 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" th:href="@{/css/dashboard.css}"> 
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
 	<title>Admin Dashboard</title>
 </head>
 
 <body>
 	<h1>管理者専用ダッシュボード</h1>
-	<p>ようこそ、管理者ユーザー！</p>
+	<p>ようこそ、管理者ユーザー！ここでは全てのユーザー情報を管理できます。</p>
 	<a href="/logout">ログアウト</a>
 
 	<table>
+		<caption>ユーザー一覧　ユーザー数: <span th:text="${usersCount}"></span></caption>
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -22,20 +23,22 @@
 				<th>ロール</th>
 				<th>作成日</th>
 				<th>更新日</th>
+				<th>ステータス</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="user : ${users}">
-				<td th:text="${user.id}"></td>
+				<td><a th:href="@{/admin/user/{id}(id=${user.id})}" th:text="${user.id}"></a></td>
 				<td th:text="${user.username}"></td>
 				<td th:text="${user.email}"></td>
 				<td th:text="${user.role}"></td>
 				<td th:text="${user.getFormattedDate(user.createdAt)}"></td>
 				<td th:text="${user.getFormattedDate(user.updatedAt)}"></td>
+				<td th:style="${user.isBanned ? 'color: red; font-weight: bold;' : 'color: blue;'}"
+					th:text="${user.isBanned ? 'BAN' : 'アクティブ'}"></td>
 			</tr>
 		</tbody>
 	</table>
-
 </body>
 
 </html>
