@@ -4,37 +4,58 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Insert title here</title>
+	<link rel="stylesheet" th:href="@{/css/user-details.css}">
+	<title>詳細管理画面</title>
 </head>
 
 <body>
-	<h2>ユーザー詳細</h2>
-	<p>ID: <span th:text="${user.id}"></span></p>
-	<p>名前: <span th:text="${user.username}"></span></p>
-	<p>メール: <span th:text="${user.email}"></span></p>
-	<p>ロール: <span th:text="${user.role}"></span></p>
-	<p>状態: <span th:text="${user.isBanned ? 'BAN中' : 'アクティブ'}"></span></p>
+	<div class="container">
+		<h2>ユーザー詳細</h2>
+		<div class="user-info">
+			<p>ID: <span th:text="${user.id}"></span></p>
+			<p>名前: <span th:text="${user.username}"></span></p>
+			<p>メール: <span th:text="${user.email}"></span></p>
+			<p>ロール: <span th:text="${user.role}"></span></p>
+			<p>作成日: <span th:text="${user.getFormattedDate(user.createdAt)}"></span></p>
+			<p>最終更新日: <span th:text="${user.getFormattedDate(user.updatedAt)}"></span></p>
+			<p>状態: <span th:text="${user.isBanned ? 'BAN中' : 'アクティブ'}"></span></p>
+		</div>
 
-	<h3>BAN操作</h3>
-	<form th:action="@{/admin/ban/{userId}(userId=${user.id})}" method="post">
-		<label for="banType">BANの種類:</label>
-		<select name="banType">
-			<option value="SOFT">Soft Ban</option>
-			<option value="TEMPORARY">Temporary Ban</option>
-			<option value="PERMANENT">Permanent Ban</option>
-		</select>
-		<label for="duration">期間（日数）:</label>
-		<input type="number" name="duration" placeholder="日数" />
-		<label for="reason">理由:</label>
-		<input type="text" name="reason" placeholder="BAN理由" />
-		<button type="submit">BANを適用</button>
-	</form>
+		<div class="form-section">
+			<!-- BAN解除フォーム: BAN中の時のみ表示 -->
+			<div th:if="${user.isBanned}">
+				<h3>BAN解除</h3>
+				<form th:action="@{/admin/unban/{userId}(userId=${user.id})}" method="post">
+					<button type="submit">BAN解除</button>
+				</form>
+			</div>
 
-	<h3>BAN解除</h3>
-	<form th:action="@{/admin/unban/{userId}(userId=${user.id})}" method="post">
-		<button type="submit">BAN解除</button>
-	</form>
+			<!-- BAN適用フォーム: 常に表示 -->
+			<h3 th:text="${user.isBanned ? 'BANを更新' : 'BANを適用'}"></h3>
+			<form th:action="@{/admin/ban/{userId}(userId=${user.id})}" method="post">
+				<label for="banType">BANの種類:</label>
+				<select name="banType">
+					<option value="SOFT">Soft Ban</option>
+					<option value="TEMPORARY">Temporary Ban</option>
+					<option value="PERMANENT">Permanent Ban</option>
+				</select>
+				<label for="duration">期間（日数）:</label>
+				<input type="number" name="duration" placeholder="日数" />
+				<label for="reason">理由:</label>
+				<input type="text" name="reason" placeholder="BAN理由" />
+				<button type="submit" th:text="${user.isBanned ? 'BANを更新する' : 'BANを適用する'}"></button>
+			</form>
+		</div>
+		
+		<!-- ダッシュボードに戻るボタン -->
+		<div style="text-align: center; margin-top: 20px;">
+			<a href="/admin/dashboard" class="btn btn-primary">ダッシュボードに戻る</a>
+		</div>
 
+		<div th:if="${message}" class="alert">
+			<p th:text="${message}"></p>
+		</div>
+	</div>
 </body>
 
 </html>

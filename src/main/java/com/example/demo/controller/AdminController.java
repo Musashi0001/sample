@@ -9,16 +9,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.User;
+import com.example.demo.service.BanService;
 import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
 	
 	private final UserService userService;
+	private final BanService banService;
 
     @GetMapping("/dashboard")
     public String adminDashboard(Model model) {
@@ -33,7 +35,6 @@ public class AdminController {
     public String userDetails(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
-        System.out.println(user);
         return "admin/user-details";
     }
 }

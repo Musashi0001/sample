@@ -19,7 +19,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 			Authentication authentication) throws IOException, ServletException {
 		// ユーザーのロールをチェックして遷移先を決定
 		for (GrantedAuthority authority : authentication.getAuthorities()) {
-			System.out.println(authority.getAuthority());
 			if (authority.getAuthority().equals("ROLE_ADMIN")) {
 				response.sendRedirect("/admin/dashboard");
 				return;

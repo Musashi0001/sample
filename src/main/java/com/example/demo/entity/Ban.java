@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import com.example.demo.enums.BanType;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -26,6 +27,7 @@ public class Ban {
     private Long id;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // BAN対象のユーザー
 

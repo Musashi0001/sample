@@ -27,41 +27,70 @@ public class BanService {
 		return !activeBans.isEmpty();
 	}
 
-	// BANを適用する
-	public Ban applyBan(Long userId, BanType banType, String reason, Integer durationDays, String executedBy) {
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
-
-		Ban ban = new Ban();
-		ban.setUser(user);
-		ban.setBanType(banType);
-		ban.setReason(reason);
-		ban.setBannedAt(LocalDateTime.now());
-		ban.setExecutedBy(executedBy);
-
-		if (banType == BanType.TEMPORARY) {
-			ban.setBanExpiry(LocalDateTime.now().plusDays(durationDays));
-		}
-
-		return banRepository.save(ban);
+	public Long getActiveBanIdByUserId(Long userId) {
+		List<Ban> bans = banRepository.findByUserId(userId);
+		return bans.stream()
+				.filter(ban -> ban.getBanExpiry() == null || ban.getBanExpiry().isAfter(LocalDateTime.now()))
+				.findFirst()
+				.map(Ban::getId)
+				.orElseThrow(() -> new RuntimeException("有効なBANが見つかりません"));
 	}
 
-	// BANを解除する
-	public void liftBan(Long banId, Long userId) {
-		Ban ban = banRepository.findById(banId)
-				.orElseThrow(() -> new RuntimeException("BANが見つかりません"));
-		banRepository.delete(ban);
-		
+	public void applyOrUpdateBan(Long userId, BanType banType, String reason, Integer durationDays, String executedBy) {
+		// ユーザーを取得
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
+
+		// アクティブなBANを検索
+		Ban activeBan = banRepository.findByUserId(userId).stream()
+				.filter(ban -> ban.getBanExpiry() == null || ban.getBanExpiry().isAfter(LocalDateTime.now()))
+				.findFirst()
+				.orElse(null);
+
+		if (activeBan != null) {
+			// アクティブなBANを更新
+			activeBan.setBanType(banType);
+			activeBan.setReason(reason);
+			activeBan.setBanExpiry(durationDays != null ? LocalDateTime.now().plusDays(durationDays) : null);
+			activeBan.setExecutedBy(executedBy);
+			banRepository.save(activeBan);
+		} else {
+			// 新規BANを作成
+			Ban newBan = new Ban();
+			newBan.setUser(user);
+			newBan.setBanType(banType);
+			newBan.setReason(reason);
+			newBan.setBannedAt(LocalDateTime.now());
+			newBan.setBanExpiry(durationDays != null ? LocalDateTime.now().plusDays(durationDays) : null);
+			newBan.setExecutedBy(executedBy);
+			banRepository.save(newBan);
+		}
+
+		// is_banned フラグを更新
+		user.setBanned(true);
+		userRepository.save(user);
+	}
+
+	public void liftBan(Long banId) {
+		// BANレコードを削除
+		Ban ban = banRepository.findById(banId).orElseThrow(() -> new RuntimeException("BANが見つかりません"));
+		banRepository.delete(ban);
+
+		// ユーザーのBAN状態を更新
+		User user = ban.getUser();
 		user.setBanned(false);
 		userRepository.save(user);
 	}
 
-	// 自動解除（スケジュールタスク）
-	@Scheduled(cron = "0 0 0 * * *") // 毎日深夜0時に実行
-	public void autoLiftExpiredBans() {
-		List<Ban> expiredBans = banRepository.findByBanExpiryBefore(LocalDateTime.now());
-		banRepository.deleteAll(expiredBans);
+	@Scheduled(cron = "0 0 0 * * *")
+	public void updateBanStatus() {
+		// 期限切れ BAN の is_banned を解除
+		List<User> users = userRepository.findAll();
+		for (User user : users) {
+			boolean isBanned = banRepository.findByUserId(user.getId()).stream()
+					.anyMatch(ban -> ban.getBanExpiry() == null || ban.getBanExpiry().isAfter(LocalDateTime.now()));
+			user.setBanned(isBanned);
+			userRepository.save(user);
+		}
 	}
 }

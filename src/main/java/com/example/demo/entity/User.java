@@ -22,6 +22,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.example.demo.enums.Role;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -55,6 +56,7 @@ public class User {
 	private boolean isBanned;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
     private List<Ban> bans = new ArrayList<>(); // ユーザーが持つBANのリスト
 
 	public String getFormattedDate(LocalDateTime date) {

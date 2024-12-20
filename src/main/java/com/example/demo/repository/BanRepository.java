@@ -11,6 +11,9 @@ import com.example.demo.enums.BanType;
 
 @Repository
 public interface BanRepository extends JpaRepository<Ban, Long> {
+	// userId に基づいて BAN を取得
+    List<Ban> findByUserId(Long userId);
+	
     // BAN中のユーザーを取得
     List<Ban> findByUserIdAndBanExpiryAfter(Long userId, LocalDateTime now);
 
