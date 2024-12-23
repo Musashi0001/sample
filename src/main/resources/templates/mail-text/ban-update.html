@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>アカウント停止処分の内容が変更されました</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			line-height: 1.6;
+		}
+
+		.container {
+			max-width: 600px;
+			margin: 20px auto;
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #333;
+			text-align: center;
+		}
+
+		.support {
+			margin-top: 20px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>アカウント停止処分の内容が変更されました</h1>
+		<p>お客様のアカウントは下記の理由で内容が変更されました。</p>
+		<ul>
+			<li>理由: <strong>{{reason}}</strong></li>
+			<li>BAN適用日: {{bannedAt}}</li>
+			<li>BAN種類: {{banType}}</li>
+			<li>期間: <span style="color: red">{{durationDays}}</span></li>
+			<li>解除予定日: <strong>{{banExpiry}}</strong></li>
+		</ul>
+		<p>詳細についてはサポートチームまでお問い合わせください。</p>
+		<div class="support">
+			<p>【サポートチーム連絡先】</p>
+			<p>メール: support@example.com<br>
+				電話: 0120-000-000<br>
+				営業時間: 9:00~18:00 年中無休
+			</p>
+		</div>
+	</div>
+</body>
+
+</html>
