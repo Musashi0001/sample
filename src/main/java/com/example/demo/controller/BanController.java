@@ -25,7 +25,7 @@ public class BanController {
     public String applyBan(
             @PathVariable Long userId, // URLパスからユーザーIDを取得
             @RequestParam BanType banType, // フォームからBANの種類を取得
-            @RequestParam(required = false) Integer duration, // フォームからBAN期間を取得（任意）
+            @RequestParam(required = false) Integer durationDays, // フォームからBAN期間を取得
             @RequestParam String reason, // フォームから理由を取得
             RedirectAttributes redirectAttributes // リダイレクト時のメッセージ用
     ) {
@@ -33,10 +33,10 @@ public class BanController {
 		String executedBy = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		// BAN適用または更新
-	    banService.applyOrUpdateBan(userId, banType, reason, duration, executedBy);
+	    banService.applyOrUpdateBan(userId, banType, reason, durationDays, executedBy);
         
         // リダイレクト時にメッセージを渡す
-        redirectAttributes.addFlashAttribute("message", "ユーザー " + userId + " に BAN を適用しました。");
+        redirectAttributes.addFlashAttribute("message", "ユーザーID " + userId + " に BAN を適用しました。");
         return "redirect:/admin/user/" + userId; // リダイレクト先を指定
     }
 
@@ -52,7 +52,7 @@ public class BanController {
 		banService.liftBan(banId);
 
 		// リダイレクト時にメッセージを渡す
-		redirectAttributes.addFlashAttribute("message", "ユーザー " + userId + " の BAN を解除しました。");
+		redirectAttributes.addFlashAttribute("message", "ユーザーID " + userId + " の BAN を解除しました。");
         return "redirect:/admin/user/" + userId; // リダイレクト先を指定
 	}
 }

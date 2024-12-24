@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,23 @@ public class BanService {
 	private final UserRepository userRepository;
 	private final EmailService emailService;
 
-	// ユーザーがBAN中かを判定する
-	public boolean isUserBanned(Long userId) {
-		List<Ban> activeBans = banRepository.findByUserIdAndBanExpiryAfter(userId, LocalDateTime.now());
-		return !activeBans.isEmpty();
+	// userId に基づいて Ban を取得
+	public Optional<Ban> getBanInfoIfBanned(Long userId) {
+		// ユーザーを取得
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("ユーザーが見つかりません (ID: " + userId + ")"));
+
+		// isBanned チェック
+		if (user.isBanned()) {
+			// BAN情報を取得
+			return banRepository.findByUserId(userId);
+		}
+
+		return Optional.empty();
 	}
 
 	public Long getActiveBanIdByUserId(Long userId) {
-		List<Ban> bans = banRepository.findByUserId(userId);
+		Optional<Ban> bans = banRepository.findByUserId(userId);
 		return bans.stream()
 				.filter(ban -> ban.getBanExpiry() == null || ban.getBanExpiry().isAfter(LocalDateTime.now()))
 				.findFirst()
@@ -54,6 +64,7 @@ public class BanService {
 			// アクティブなBANを更新
 			activeBan.setBanType(banType);
 			activeBan.setReason(reason);
+			activeBan.setDurationDays(durationDays);
 			activeBan.setBanExpiry(durationDays != null ? LocalDateTime.now().plusDays(durationDays) : null);
 			activeBan.setExecutedBy(executedBy);
 			banRepository.save(activeBan);
@@ -61,7 +72,6 @@ public class BanService {
 			Map<String, String> placeholders = createPlaceholders(reason, banType,
 					user.getFormattedDate(activeBan.getBannedAt()), durationDays,
 					activeBan.getBanExpiry());
-			System.out.println(activeBan.getBanExpiry());
 
 			emailService.sendTemplatedEmail(user.getEmail(), "アカウント停止処分の内容が変更されました", "ban-update", placeholders);
 		} else {
@@ -71,6 +81,7 @@ public class BanService {
 			newBan.setBanType(banType);
 			newBan.setReason(reason);
 			newBan.setBannedAt(LocalDateTime.now());
+			newBan.setDurationDays(durationDays);
 			newBan.setBanExpiry(durationDays != null ? LocalDateTime.now().plusDays(durationDays) : null);
 			newBan.setExecutedBy(executedBy);
 			banRepository.save(newBan);

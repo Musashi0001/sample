@@ -10,8 +10,12 @@
 
 <body>
 	<div class="container">
+		<div th:if="${message}" class="alert">
+			<p th:text="${message}"></p>
+		</div>
 		<h2>ユーザー詳細</h2>
 		<div class="user-info">
+			<h2>ユーザー情報</h2>
 			<p>ID: <span th:text="${user.id}"></span></p>
 			<p>名前: <span th:text="${user.username}"></span></p>
 			<p>メール: <span th:text="${user.email}"></span></p>
@@ -19,6 +23,15 @@
 			<p>作成日: <span th:text="${user.getFormattedDate(user.createdAt)}"></span></p>
 			<p>最終更新日: <span th:text="${user.getFormattedDate(user.updatedAt)}"></span></p>
 			<p>状態: <span th:text="${user.isBanned ? 'BAN中' : 'アクティブ'}"></span></p>
+			<!-- BAN情報の表示 -->
+			<div th:if="${ban}">
+				<h2>BAN情報</h2>
+				<p>BAN区分: <span th:text="${ban.banType.getLabel()}"></span></p>
+				<p>BAN理由: <span th:text="${ban.reason}"></span></p>
+				<p>BAN適用日: <span th:text="${user.getFormattedDate(ban.bannedAt)}"></span></p>
+				<p>BAN期間: <span th:text="${ban.durationDays != null ? ban.durationDays + '日間' : '無期限'}"></span></p>
+				<p>BAN解除日: <span th:text="${ban.banExpiry != null ? user.getFormattedDate(ban.banExpiry) : 'なし'}"></span></p>
+			</div>
 		</div>
 
 		<div class="form-section">
@@ -34,28 +47,29 @@
 			<h3 th:text="${user.isBanned ? 'BANを更新' : 'BANを適用'}"></h3>
 			<form th:action="@{/admin/ban/{userId}(userId=${user.id})}" method="post">
 				<label for="banType">BANの種類:</label>
-				<select name="banType">
-					<option value="SOFT">Soft Ban</option>
-					<option value="TEMPORARY">Temporary Ban</option>
-					<option value="PERMANENT">Permanent Ban</option>
+				<select id="banType" name="banType">
+					<option value="SOFT">一部機能制限</option>
+					<option value="TEMPORARY">期間</option>
+					<option value="PERMANENT">永久</option>
 				</select>
-				<label for="duration">期間（日数）:</label>
-				<input type="number" name="duration" placeholder="日数" />
+				<div id="durationField">
+					<label for="durationDays">期間（日数）:</label>
+					<input type="number" id="durationDays" name="durationDays" placeholder="日数" required />
+				</div>
 				<label for="reason">理由:</label>
-				<input type="text" name="reason" placeholder="BAN理由" />
+				<input type="text" id="reason" name="reason" placeholder="BAN理由" required />
 				<button type="submit" th:text="${user.isBanned ? 'BANを更新する' : 'BANを適用する'}"></button>
 			</form>
 		</div>
-		
+
 		<!-- ダッシュボードに戻るボタン -->
 		<div style="text-align: center; margin-top: 20px;">
 			<a href="/admin/dashboard" class="btn btn-primary">ダッシュボードに戻る</a>
 		</div>
 
-		<div th:if="${message}" class="alert">
-			<p th:text="${message}"></p>
-		</div>
 	</div>
+
+	<script th:src="@{/js/user-details.js}"></script>
 </body>
 
 </html>
