@@ -11,27 +11,74 @@
 <body>
 	<div class="container">
 		<div th:if="${message}" class="alert">
-			<p th:text="${message}"></p>
+			<strong>
+				<p th:text="${message}"></p>
+			</strong>
 		</div>
 		<h2>ユーザー詳細</h2>
-		<div class="user-info">
-			<h2>ユーザー情報</h2>
-			<p>ID: <span th:text="${user.id}"></span></p>
-			<p>名前: <span th:text="${user.username}"></span></p>
-			<p>メール: <span th:text="${user.email}"></span></p>
-			<p>ロール: <span th:text="${user.role}"></span></p>
-			<p>作成日: <span th:text="${user.getFormattedDate(user.createdAt)}"></span></p>
-			<p>最終更新日: <span th:text="${user.getFormattedDate(user.updatedAt)}"></span></p>
-			<p>状態: <span th:text="${user.isBanned ? 'BAN中' : 'アクティブ'}"></span></p>
-			<!-- BAN情報の表示 -->
-			<div th:if="${ban}">
-				<h2>BAN情報</h2>
-				<p>BAN区分: <span th:text="${ban.banType.getLabel()}"></span></p>
-				<p>BAN理由: <span th:text="${ban.reason}"></span></p>
-				<p>BAN適用日: <span th:text="${user.getFormattedDate(ban.bannedAt)}"></span></p>
-				<p>BAN期間: <span th:text="${ban.durationDays != null ? ban.durationDays + '日間' : '無期限'}"></span></p>
-				<p>BAN解除日: <span th:text="${ban.banExpiry != null ? user.getFormattedDate(ban.banExpiry) : 'なし'}"></span></p>
-			</div>
+		<table class="user-details-table">
+			<tr>
+				<th>項目</th>
+				<th>内容</th>
+			</tr>
+			<tr>
+				<td>ID</td>
+				<td th:text="${user.id}"></td>
+			</tr>
+			<tr>
+				<td>名前</td>
+				<td th:text="${user.username}"></td>
+			</tr>
+			<tr>
+				<td>メール</td>
+				<td th:text="${user.email}"></td>
+			</tr>
+			<tr>
+				<td>ロール</td>
+				<td th:text="${user.role}"></td>
+			</tr>
+			<tr>
+				<td>作成日</td>
+				<td th:text="${user.getFormattedDate(user.createdAt)}"></td>
+			</tr>
+			<tr>
+				<td>最終更新日</td>
+				<td th:text="${user.getFormattedDate(user.updatedAt)}"></td>
+			</tr>
+			<tr>
+				<td>状態</td>
+				<td th:text="${user.isBanned ? 'BAN中' : 'アクティブ'}"></td>
+			</tr>
+		</table>
+
+		<div th:if="${ban}">
+			<h2>BAN情報</h2>
+			<table class="ban-details-table">
+				<tr>
+					<th>項目</th>
+					<th>内容</th>
+				</tr>
+				<tr>
+					<td>BAN区分</td>
+					<td th:text="${ban.banType.getLabel()}"></td>
+				</tr>
+				<tr>
+					<td>BAN理由</td>
+					<td th:text="${ban.reason}"></td>
+				</tr>
+				<tr>
+					<td>BAN適用日</td>
+					<td th:text="${user.getFormattedDate(ban.bannedAt)}"></td>
+				</tr>
+				<tr>
+					<td>BAN期間</td>
+					<td th:text="${ban.durationDays != null ? ban.durationDays + '日間' : '無期限'}"></td>
+				</tr>
+				<tr>
+					<td>BAN解除日</td>
+					<td th:text="${ban.banExpiry != null ? user.getFormattedDate(ban.banExpiry) : 'なし'}"></td>
+				</tr>
+			</table>
 		</div>
 
 		<div class="form-section">

@@ -48,7 +48,7 @@ public class BanService {
 				.orElseThrow(() -> new RuntimeException("有効なBANが見つかりません"));
 	}
 
-	//BAN
+	//BAN適用
 	public void applyOrUpdateBan(Long userId, BanType banType, String reason, Integer durationDays, String executedBy) {
 		// ユーザーを取得
 		User user = userRepository.findById(userId)
@@ -64,10 +64,13 @@ public class BanService {
 			// アクティブなBANを更新
 			activeBan.setBanType(banType);
 			activeBan.setReason(reason);
+			activeBan.setBannedAt(LocalDateTime.now());
 			activeBan.setDurationDays(durationDays);
 			activeBan.setBanExpiry(durationDays != null ? LocalDateTime.now().plusDays(durationDays) : null);
 			activeBan.setExecutedBy(executedBy);
 			banRepository.save(activeBan);
+			System.out.println(activeBan);
+			
 			// BAN更新メール送信
 			Map<String, String> placeholders = createPlaceholders(reason, banType,
 					user.getFormattedDate(activeBan.getBannedAt()), durationDays,
@@ -94,6 +97,7 @@ public class BanService {
 
 		// is_banned フラグを更新
 		user.setBanned(true);
+		user.setUpdatedAt(LocalDateTime.now());
 		userRepository.save(user);
 	}
 

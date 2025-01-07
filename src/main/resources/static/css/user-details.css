@@ -19,24 +19,28 @@ body {
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* ユーザー情報のスタイル */
-.user-info {
-	border: 1px solid #ddd;
-	padding: 15px;
-	border-radius: 10px;
-	background-color: #f9f9f9;
-	margin-bottom: 20px;
+.user-details-table, .ban-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
 }
 
-.user-info p {
-	font-size: 16px;
-	color: #333;
-	margin: 10px 0;
+.user-details-table th, .ban-details-table th {
+    text-align: left;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-weight: bold;
 }
 
-.user-info span {
-	font-weight: bold;
-	color: #2c3e50;
+.user-details-table td, .ban-details-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.user-details-table th:first-child, .ban-details-table th:first-child {
+    width: 30%;
 }
 
 /* BAN操作セクション */

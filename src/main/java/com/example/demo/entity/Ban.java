@@ -42,7 +42,6 @@ public class Ban {
     private String reason; // BAN理由
     
 	@CreationTimestamp
-	@Column(updatable = false)
     private LocalDateTime bannedAt; // BAN適用日時
 	
     private Integer durationDays; //BAN期間
