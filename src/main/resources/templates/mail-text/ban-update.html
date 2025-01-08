@@ -36,11 +36,16 @@
 		<h1>アカウント停止処分の内容が変更されました</h1>
 		<p>お客様のアカウントは下記の理由で内容が変更されました。</p>
 		<ul>
-			<li>理由: <strong>{{reason}}</strong></li>
-			<li>BAN適用日: {{bannedAt}}</li>
-			<li>BAN種類: {{banType}}</li>
-			<li>期間: <span style="color: red">{{durationDays}}</span></li>
-			<li>解除予定日: <strong>{{banExpiry}}</strong></li>
+			<li>理由: [変更前]<strong>{{oldReason}}</strong><br>
+				→[変更後]<strong>{{reason}}</strong></li>
+			<li>BAN適用日: [変更前]<strong>{{oldBannedAt}}</strong><br>
+				→[変更後]<strong>{{bannedAt}}</strong></li>
+			<li>BAN種類: [変更前]<strong>{{oldBanType}}</strong><br>
+				→[変更後]<strong>{{banType}}</strong></li>
+			<li>期間: [変更前]<span style="color: red"><strong>{{oldDurationDays}}</strong></span><br>
+				→[変更後]<span style="color: red"><strong>{{durationDays}}</strong></span></li>
+			<li>解除予定日: [変更前]<strong>{{oldBanExpiry}}</strong><br>
+				→[変更後]<strong>{{banExpiry}}</strong></li>
 		</ul>
 		<p>詳細についてはサポートチームまでお問い合わせください。</p>
 		<div class="support">

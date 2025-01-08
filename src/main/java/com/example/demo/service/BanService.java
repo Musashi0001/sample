@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,6 +62,14 @@ public class BanService {
 				.orElse(null);
 
 		if (activeBan != null) {
+			// 更新前の情報
+		    Ban oldBan = new Ban();
+		    oldBan.setBanType(activeBan.getBanType());
+		    oldBan.setReason(activeBan.getReason());
+		    oldBan.setBannedAt(activeBan.getBannedAt());
+		    oldBan.setDurationDays(activeBan.getDurationDays());
+		    oldBan.setBanExpiry(activeBan.getBanExpiry());
+		    
 			// アクティブなBANを更新
 			activeBan.setBanType(banType);
 			activeBan.setReason(reason);
@@ -69,10 +78,11 @@ public class BanService {
 			activeBan.setBanExpiry(durationDays != null ? LocalDateTime.now().plusDays(durationDays) : null);
 			activeBan.setExecutedBy(executedBy);
 			banRepository.save(activeBan);
-			System.out.println(activeBan);
-			
+
 			// BAN更新メール送信
-			Map<String, String> placeholders = createPlaceholders(reason, banType,
+			Map<String, String> placeholders = createPlaceholders(
+				    Optional.of(oldBan),
+					reason, banType,
 					user.getFormattedDate(activeBan.getBannedAt()), durationDays,
 					activeBan.getBanExpiry());
 
@@ -89,7 +99,9 @@ public class BanService {
 			newBan.setExecutedBy(executedBy);
 			banRepository.save(newBan);
 			// BAN適用メール送信
-			Map<String, String> placeholders = createPlaceholders(reason, banType,
+			Map<String, String> placeholders = createPlaceholders(
+					Optional.empty(),
+					reason, banType,
 					user.getFormattedDate(newBan.getBannedAt()), durationDays,
 					newBan.getBanExpiry());
 			emailService.sendTemplatedEmail(user.getEmail(), "アカウントが停止されました", "ban-apply", placeholders);
@@ -129,14 +141,28 @@ public class BanService {
 		}
 	}
 
-	private Map<String, String> createPlaceholders(String reason, BanType banType, String bannedAt,
-			Integer durationDays,
-			LocalDateTime banExpiry) {
-		return Map.of(
+	private Map<String, String> createPlaceholders(Optional<Ban> oldBan, String reason, BanType banType,
+			String bannedAt, Integer durationDays, LocalDateTime banExpiry) {
+		Map<String, String> placeholders = Map.of(
+				// 変更後のBAN情報
 				"reason", reason,
 				"banType", banType.getLabel(),
 				"bannedAt", bannedAt,
 				"durationDays", durationDays != null ? durationDays + "日間" : "無期限",
 				"banExpiry", banExpiry != null ? new User().getFormattedDate(banExpiry) : "なし");
+
+		// 変更前のBAN情報が存在する場合、追加
+		if (oldBan.isPresent()) {
+			Ban old = oldBan.get();
+			placeholders = new HashMap<>(placeholders);
+			placeholders.put("oldReason", old.getReason());
+			placeholders.put("oldBanType", old.getBanType().getLabel());
+			placeholders.put("oldBannedAt", new User().getFormattedDate(old.getBannedAt()));
+			placeholders.put("oldDurationDays", old.getDurationDays() != null ? old.getDurationDays() + "日間" : "無期限");
+			placeholders.put("oldBanExpiry",
+					old.getBanExpiry() != null ? new User().getFormattedDate(old.getBanExpiry()) : "なし");
+		}
+
+		return placeholders;
 	}
 }
