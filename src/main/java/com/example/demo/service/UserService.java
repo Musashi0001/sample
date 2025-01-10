@@ -23,6 +23,10 @@ public class UserService implements UserDetailsService {
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 		
+		if (user.isBanned()) {
+	        throw new RuntimeException("This account is banned.");
+	    }
+		
 		// Spring Security の UserDetails を返す
 		return org.springframework.security.core.userdetails.User.builder()
 				.username(user.getUsername())

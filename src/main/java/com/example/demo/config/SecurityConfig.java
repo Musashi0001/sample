@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private final CustomAuthenticationSuccessHandler successHandler;
+	private final CustomAuthenticationFailureHandler failureHandler;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -27,7 +28,8 @@ public class SecurityConfig {
 						.anyRequest().authenticated()) // 他のリクエストは認証が必要
 				.formLogin(form -> form
 						.loginPage("/login")
-						.successHandler(successHandler) // カスタムハンドラを設定
+						.successHandler(successHandler) // カスタム成功ハンドラを設定
+						.failureHandler(failureHandler) //カスタム失敗ハンドラを設定
 						.permitAll())
 				.logout(logout -> logout
 						.logoutSuccessUrl("/login?logout")

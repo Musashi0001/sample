@@ -1,3 +1,9 @@
+// ページ読み込み時に初期化
+document.addEventListener("DOMContentLoaded", () => {
+	toggleDurationInput(); // 初期状態を設定
+	document.getElementById("banType").addEventListener("change", toggleDurationInput);
+});
+
 // BANの種類に応じて期間入力欄を表示/非表示
 function toggleDurationInput() {
     const banType = document.getElementById("banType").value;
@@ -12,10 +18,3 @@ function toggleDurationInput() {
         durationInput.setAttribute("required", "required"); // required属性を追加
     }
 }
-
-
-// ページ読み込み時に初期化
-document.addEventListener("DOMContentLoaded", () => {
-	toggleDurationInput(); // 初期状態を設定
-	document.getElementById("banType").addEventListener("change", toggleDurationInput);
-});

@@ -15,12 +15,13 @@
 		<form id="login-form" class="form" th:action="@{/login}" method="post"
 			th:classappend="${showRegister} ? 'hidden' : ''">
 			<label for="username">ユーザーネーム</label>
-			<input type="text" name="username" id="username" autocomplete="username" required>
+			<input type="text" name="username" id="username" th:value="${username}" autocomplete="username" required>
 			<label for="password">パスワード</label>
 			<input type="password" name="password" id="password" autocomplete="current-password" required>
 			<!-- 完了メッセージの表示 -->
 			<p th:if="${success}" style="color: green;">[[${success}]]</p>
 			<!-- エラーメッセージの表示 -->
+			<p th:if="${error}" style="color: red;">[[${error}]]</p>
 			<button type="submit">ログイン</button>
 		</form>
 		<!-- 新規登録フォーム -->

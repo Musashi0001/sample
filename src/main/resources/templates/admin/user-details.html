@@ -78,6 +78,10 @@
 					<td>BAN解除日</td>
 					<td th:text="${ban.banExpiry != null ? user.getFormattedDate(ban.banExpiry) : 'なし'}"></td>
 				</tr>
+				<tr>
+					<td>BAN適用者</td>
+					<td th:text="${ban.executedBy}"></td>
+				</tr>
 			</table>
 		</div>
 
