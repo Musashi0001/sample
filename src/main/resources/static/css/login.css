@@ -59,8 +59,13 @@ input:focus {
 	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+a {
+	text-align: right;
+}
+
 button {
 	width: 100%;
+	margin-top: 15px;
 	padding: 10px;
 	border: none;
 	border-radius: 5px;

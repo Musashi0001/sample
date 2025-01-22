@@ -23,7 +23,7 @@ public class SecurityConfig {
 		http
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
+						.requestMatchers("/login", "/register","/password/**", "/css/**", "/js/**").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN") // Admin専用ページ
 						.anyRequest().authenticated()) // 他のリクエストは認証が必要
 				.formLogin(form -> form

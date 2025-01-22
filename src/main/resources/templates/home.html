@@ -4,12 +4,26 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--	<link rel="stylesheet" th:href="@{/css/}"> -->
+	<!--	<link rel="stylesheet" th:href="@{/css/}"> -->
 	<title>ホーム</title>
+	<script>
+		function confirmDelete(userId) {
+			if (confirm("本当にこのアカウントを削除しますか？")) {
+				document.getElementById('delete-form').submit();
+			}
+		}
+	</script>
 </head>
 
 <body style="text-align: center;">
 	<h1>HOME</h1>
+	<p>ログイン中のユーザー: <span th:text="${#authentication.name}"></span></p>
+
+	<form id="delete-form" th:action="@{/delete}" method="post">
+		<input type="hidden" name="username" th:value="${#authentication.name}" />
+		<button type="button" onclick="confirmDelete()">アカウント削除</button>
+	</form>
+
 	<a href="/logout">ろぐあうと</a>
 </body>
 
