@@ -6,8 +6,6 @@ spring.datasource.username=username
 spring.datasource.password=password
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-logging.level.org.springframework.security=DEBUG
-
 #メール設定
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587

@@ -60,7 +60,12 @@ input:focus {
 }
 
 a {
-	text-align: right;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	font-weight: bold;
 }
 
 button {
@@ -78,6 +83,26 @@ button {
 
 button:hover {
 	background-color: #0056b3;
+}
+
+/* ボタンのコンテナを横並びに配置 */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* ボタンの幅を調整 */
+.button-container button {
+    flex: 1;
+}
+
+#back {
+	background-color: orange;
+}
+
+#back:hover {
+	background-color: orangered;
 }
 
 /* 非表示クラス */

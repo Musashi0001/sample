@@ -14,7 +14,7 @@
 		<!-- ログインフォーム -->
 		<form id="login-form" class="form" th:action="@{/login}" method="post"
 			th:classappend="${showRegister} ? 'hidden' : ''">
-			<label for="username">ユーザーネーム</label>
+			<label for="username">ユーザーネームまたはメールアドレス</label>
 			<input type="text" name="username" id="username" th:value="${username}" autocomplete="username" required>
 			<label for="password">パスワード</label>
 			<input type="password" name="password" id="password" autocomplete="current-password" required>

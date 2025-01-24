@@ -34,7 +34,7 @@ public class PasswordResetController {
 	public String showResetForm(@RequestParam("token") String token, Model model) {
         if (!resetService.isValidToken(token)) {
             model.addAttribute("error", "無効または期限切れのトークンです。");
-            return "password-resetting-error";
+            return "password-resetting";
         }
         model.addAttribute("token", token);
         return "password-resetting";
@@ -46,7 +46,7 @@ public class PasswordResetController {
                                 Model model) {
         if (!resetService.isValidToken(token)) {
             model.addAttribute("error", "無効または期限切れのトークンです。");
-            return "password-resetting-error";
+            return "password-resetting";
         }
 
         resetService.updatePassword(token, password);

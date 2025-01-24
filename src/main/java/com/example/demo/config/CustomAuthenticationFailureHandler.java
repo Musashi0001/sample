@@ -17,7 +17,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                                         org.springframework.security.core.AuthenticationException exception)
             throws IOException, ServletException {
 
-        if ("This account is banned.".equals(exception.getMessage())) {
+        if ("このアカウントは凍結されています。".equals(exception.getMessage())) {
             response.sendRedirect("/login?error=banned");
         } else {
         	String username = request.getParameter("username"); // 入力されたユーザーネームを取得

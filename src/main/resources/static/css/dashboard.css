@@ -22,8 +22,14 @@ p {
 	font-size: 16px;
 }
 
+.logout-container {
+	text-align: center;
+	margin-top: 20px;
+}
+
 a {
 	display: inline-block;
+	margin: auto;
 	padding: 8px 12px;
 	color: blue;
 	border-radius: 4px;

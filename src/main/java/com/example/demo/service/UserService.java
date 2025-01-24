@@ -21,12 +21,13 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+	public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(identifier)
+	            .or(() -> userRepository.findByEmail(identifier))
+	            .orElseThrow(() -> new UsernameNotFoundException("ユーザーが見つかりません"));
 
 		if (user.isBanned()) {
-			throw new RuntimeException("This account is banned.");
+			throw new RuntimeException("このアカウントは凍結されています。");
 		}
 
 		// Spring Security の UserDetails を返す

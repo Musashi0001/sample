@@ -11,10 +11,13 @@
 <body>
 	<h1>管理者専用ダッシュボード</h1>
 	<p>ようこそ、管理者ユーザー！ここでは全てのユーザー情報を管理できます。</p>
-	<a href="/logout">ログアウト</a>
+	<div class="logout-container">
+		<a href="/logout">ログアウト</a>
+	</div>
 
 	<table>
-		<caption>ユーザー一覧　ユーザー数: <span th:text="${usersCount}"></span></caption>
+		<caption>ユーザー一覧<br>
+			ユーザー数: <span th:text="${usersCount}"></span></caption>
 		<thead>
 			<tr>
 				<th>ID</th>

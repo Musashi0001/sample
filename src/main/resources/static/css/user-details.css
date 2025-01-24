@@ -19,28 +19,32 @@ body {
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.user-details-table, .ban-details-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 16px;
+.user-details-table,
+.ban-details-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 20px 0;
+	font-size: 16px;
 }
 
-.user-details-table th, .ban-details-table th {
-    text-align: left;
-    background-color: #f4f4f4;
-    padding: 10px;
-    border: 1px solid #ddd;
-    font-weight: bold;
+.user-details-table th,
+.ban-details-table th {
+	text-align: left;
+	background-color: #f4f4f4;
+	padding: 10px;
+	border: 1px solid #ddd;
+	font-weight: bold;
 }
 
-.user-details-table td, .ban-details-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
+.user-details-table td,
+.ban-details-table td {
+	padding: 10px;
+	border: 1px solid #ddd;
 }
 
-.user-details-table th:first-child, .ban-details-table th:first-child {
-    width: 30%;
+.user-details-table th:first-child,
+.ban-details-table th:first-child {
+	width: 30%;
 }
 
 /* BAN操作セクション */
@@ -70,6 +74,14 @@ form select {
 	border-radius: 5px;
 	font-size: 14px;
 	box-sizing: border-box;
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+	border-color: #007BFF;
+	outline: none;
+	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 form button {

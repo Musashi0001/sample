@@ -98,7 +98,8 @@
 			<h3 th:text="${user.isBanned ? 'BANを更新' : 'BANを適用'}"></h3>
 			<form th:action="@{/admin/ban/{userId}(userId=${user.id})}" method="post">
 				<label for="banType">BANの種類:</label>
-				<select id="banType" name="banType">
+				<select id="banType" name="banType" required>
+					<option value=""></option>
 					<option value="SOFT">一部機能制限</option>
 					<option value="TEMPORARY">期間</option>
 					<option value="PERMANENT">永久</option>
