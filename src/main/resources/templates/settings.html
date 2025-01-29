@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>設定</title>
+	<link rel="stylesheet" th:href="@{/css/settings.css}" />
+	<link rel="stylesheet" th:href="@{/css/sidebar.css}" />
+	<script th:src="@{/js/sidebar.js}" defer></script>
+	<script th:src="@{/js/settings.js}" defer></script>
+</head>
+
+<body>
+	<div th:insert="fragments/sidebar :: sidebar"></div>
+
+	<div class="settings-container">
+		<h1>設定</h1>
+
+		<!-- タブナビゲーション -->
+		<div class="tab-menu">
+			<button class="tab-link active" data-tab="account">アカウント情報</button>
+			<button class="tab-link" data-tab="password">パスワード変更</button>
+			<button class="tab-link" data-tab="email">メールアドレス変更</button>
+			<button class="tab-link" data-tab="delete">アカウント削除</button>
+		</div>
+
+		<!-- タブコンテンツ -->
+		<div id="account" class="tab-content active">
+			<h2>アカウント情報編集</h2>
+			<form action="/settings/account" method="post">
+				<label>ユーザーネーム</label>
+				<input type="text" name="username" required />
+				<button type="submit">変更</button>
+			</form>
+		</div>
+
+		<div id="password" class="tab-content">
+			<h2>パスワード変更</h2>
+			<form action="/settings/password" method="post">
+				<label>現在のパスワード</label>
+				<input type="password" name="current_password" required />
+				<label>新しいパスワード</label>
+				<input type="password" name="new_password" required />
+				<button type="submit">変更</button>
+			</form>
+		</div>
+
+		<div id="email" class="tab-content">
+			<h2>メールアドレス変更</h2>
+			<form action="/settings/email" method="post">
+				<label>新しいメールアドレス</label>
+				<input type="email" name="new_email" required />
+				<button type="submit">変更</button>
+			</form>
+		</div>
+
+		<div id="delete" class="tab-content">
+			<h2>アカウント削除</h2>
+			<form action="/settings/delete" method="post">
+				<label>パスワードを入力して削除</label>
+				<input type="password" name="password" required />
+				<button type="submit" class="danger">削除</button>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>
